@@ -11,14 +11,18 @@ namespace Infrastructure.Data;
 
 public class GenericRepository<T>(StoreContext context) : IGenericRepository<T> where T : BaseEntity
 {
-    public void Add(T entity)
+    public async Task<IReadOnlyList<T>> ListAllAsync()
     {
-        context.Set<T>().Add(entity);
+        return await context.Set<T>().ToListAsync();
     }
 
-    public bool Exists(int id)
+    public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec)
     {
-        return context.Set<T>().Any(e => e.Id == id);
+        return await ApplySpecification(spec).ToListAsync();
+    }
+    public async Task<IReadOnlyList<TResult>> ListAsync<TResult>(ISpecification<T, TResult> spec)
+    {
+        return await ApplySpecification(spec).ToListAsync();
     }
 
     public async Task<T?> GetByIdAsync(int id)
@@ -26,14 +30,18 @@ public class GenericRepository<T>(StoreContext context) : IGenericRepository<T> 
         return await context.Set<T>().FindAsync(id);
     }
 
-    public async Task<IReadOnlyList<T>> ListAllAsync()
+    public async Task<T?> GetEntityWithSpec(ISpecification<T> spec)
     {
-        return await context.Set<T>().ToListAsync();
+        return await ApplySpecification(spec).FirstOrDefaultAsync();
+    }
+    public async Task<TResult?> GetEntityWithSpec<TResult>(ISpecification<T, TResult> spec)
+    {
+        return await ApplySpecification(spec).FirstOrDefaultAsync();
     }
 
-    public void Remove(T entity)
+    public bool Exists(int id)
     {
-        context.Set<T>().Remove(entity);
+        return context.Set<T>().Any(e => e.Id == id);
     }
 
     public async Task<bool> SaveChangesAsync()
@@ -41,9 +49,28 @@ public class GenericRepository<T>(StoreContext context) : IGenericRepository<T> 
         return await context.SaveChangesAsync() > 0;
     }
 
+    public void Add(T entity)
+    {
+        context.Set<T>().Add(entity);
+    }
+
+    public void Remove(T entity)
+    {
+        context.Set<T>().Remove(entity);
+    }
+
     public void Update(T entity)
     {
         context.Set<T>().Attach(entity);
         context.Entry(entity).State = EntityState.Modified;
+    }
+
+    private IQueryable<T> ApplySpecification(ISpecification<T> spec)
+    {
+        return SpecificationEvaluator<T>.GetQuery(context.Set<T>().AsQueryable(), spec);
+    }
+    private IQueryable<TResult> ApplySpecification<TResult>(ISpecification<T, TResult> spec)
+    {
+        return SpecificationEvaluator<T>.GetQuery<T, TResult>(context.Set<T>().AsQueryable(), spec);
     }
 }

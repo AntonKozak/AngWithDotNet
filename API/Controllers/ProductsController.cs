@@ -1,9 +1,7 @@
 using Core.Entities;
 using Core.Interfaces;
-using Infrastructure.Data;
-using Microsoft.AspNetCore.Http;
+using Core.Specification;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -16,7 +14,11 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts(string? brand, string? type, string? sort)
         {
-            return Ok(await repo.ListAllAsync());
+            var spec = new ProductFilterSortPaginationSpecification(brand, type, sort);
+
+            var products = await repo.ListAsync(spec);
+
+            return Ok(products);
         }
 
         [HttpGet("{id:int}")]
@@ -82,17 +84,21 @@ namespace API.Controllers
         }
 
 
-        // [HttpGet("brands")]
-        // public async Task<ActionResult<IReadOnlyList<string>>> GetBrands()
-        // {
-        //     return Ok();
-        // }
+        [HttpGet("brands")]
+        public async Task<ActionResult<IReadOnlyList<string>>> GetBrands()
+        {
+            var spec = new BrandListSpecification();
 
-        // [HttpGet("types")]
-        // public async Task<ActionResult<IReadOnlyList<string>>> GetTypes()
-        // {
-        //     return Ok();
-        // }
+            return Ok(await repo.ListAsync(spec));
+        }
+
+        [HttpGet("types")]
+        public async Task<ActionResult<IReadOnlyList<string>>> GetTypes()
+        {
+            var spec = new TypeListSpecification();
+
+            return Ok(await repo.ListAsync(spec));
+        }
 
         private bool ProductExists(int id)
         {
