@@ -12,7 +12,7 @@ namespace API.Controllers
         {
             var spec = new ProductFilterSortPaginationSpecification(specParams);
 
-            return Ok(await CreatePagedResult(repo, spec, specParams.PageIndex, specParams.PageSize));
+            return await CreatePagedResult(repo, spec, specParams.PageIndex, specParams.PageSize);
         }
 
         [HttpGet("{id:int}")]
