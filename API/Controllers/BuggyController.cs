@@ -1,5 +1,7 @@
+using System.Security.Claims;
 using API.DTOs;
 using Core.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -41,4 +43,15 @@ public class BuggyController : BaseApiController
     {
         return Ok();
     }
+
+    [Authorize]
+    [HttpGet("secret")]
+    public IActionResult GetSecret()
+    {
+        var name = User.FindFirst(ClaimTypes.Name)?.Value;
+        var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        return Ok("This is a secret name of user ::: " + name + "::: This is secret id of user ::: " + id);
+    }
+
 }
