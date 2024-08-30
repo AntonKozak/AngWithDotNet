@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { AboutComponent } from './features/about/about.component';
+import { CartComponent } from './features/cart/cart.component';
+import { CheckoutComponent } from './features/checkout/checkout.component';
 import { ContactComponent } from './features/contact/contact.component';
 import { HomeComponent } from './features/home/home.component';
 import { ProductDetailsComponent } from './features/shop/product-details/product-details.component';
@@ -12,8 +14,10 @@ export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'shop', component: ShopComponent },
   { path: 'shop/:id', component: ProductDetailsComponent },
+  { path: 'cart', component: CartComponent },
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactComponent },
+  { path: 'checkout', component: CheckoutComponent },
   { path: 'error', component: TestErrorComponent },
   { path: 'not-found', component: NotFoundComponent },
   { path: 'server-error', component: ServerErrorComponent },

@@ -1,5 +1,5 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import {
   MatCard,
@@ -7,8 +7,9 @@ import {
   MatCardContent,
 } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
-import { Product } from '../../../shared/Models/products';
 import { RouterLink } from '@angular/router';
+import { CartService } from '../../../core/services/cart.service';
+import { Product } from '../../../shared/Models/products';
 
 @Component({
   selector: 'app-product-item',
@@ -20,11 +21,12 @@ import { RouterLink } from '@angular/router';
     MatCardActions,
     MatButton,
     MatIcon,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './product-item.component.html',
   styleUrl: './product-item.component.scss',
 })
 export class ProductItemComponent {
   @Input() product?: Product;
+  cartService = inject(CartService);
 }

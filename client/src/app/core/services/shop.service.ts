@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Pagination } from '../../shared/Models/pagination';
 import { Product } from '../../shared/Models/products';
-import { ShopParams } from '../../shared/Models/ShopParams';
+import { ShopParams } from '../../shared/Models/shopParams';
 
 @Injectable({
   providedIn: 'root',

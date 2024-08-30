@@ -14,7 +14,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ShopService } from '../../core/services/shop.service';
 import { Pagination } from '../../shared/Models/pagination';
 import { Product } from '../../shared/Models/products';
-import { ShopParams } from '../../shared/Models/ShopParams';
+import { ShopParams } from '../../shared/Models/shopParams';
 import { FiltersDialogComponent } from './filters-dialog/filters-dialog.component';
 import { ProductItemComponent } from './product-item/product-item.component';
 
