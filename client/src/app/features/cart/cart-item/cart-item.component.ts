@@ -4,7 +4,7 @@ import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { CartService } from '../../../core/services/cart.service';
-import { CartItem } from '../../../shared/Models/cart';
+import { CartItem } from '../../../shared/models/cart';
 
 @Component({
   selector: 'app-cart-item',

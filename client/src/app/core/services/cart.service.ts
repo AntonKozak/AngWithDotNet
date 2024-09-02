@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { map } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Cart, CartItem } from '../../shared/Models/cart';
-import { Product } from '../../shared/Models/products';
+import { Cart, CartItem } from '../../shared/models/cart';
+import { Product } from '../../shared/models/products';
 
 @Injectable({
   providedIn: 'root',

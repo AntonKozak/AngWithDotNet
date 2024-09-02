@@ -9,7 +9,7 @@ import {
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { CartService } from '../../../core/services/cart.service';
-import { Product } from '../../../shared/Models/products';
+import { Product } from '../../../shared/models/products';
 
 @Component({
   selector: 'app-product-item',

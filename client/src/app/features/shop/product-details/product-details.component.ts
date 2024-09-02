@@ -9,7 +9,7 @@ import { MatInput } from '@angular/material/input';
 import { ActivatedRoute } from '@angular/router';
 import { CartService } from '../../../core/services/cart.service';
 import { ShopService } from '../../../core/services/shop.service';
-import { Product } from '../../../shared/Models/products';
+import { Product } from '../../../shared/models/products';
 
 @Component({
   selector: 'app-product-details',

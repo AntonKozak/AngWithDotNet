@@ -8,9 +8,10 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideRouter } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { routes } from './app.routes';
+import { authInterceptor } from './core/inteceptors/auth.interceptor';
 import { errorInterceptor } from './core/inteceptors/error.interceptor';
 import { loadingInterceptor } from './core/inteceptors/loading.interceptor';
-import { InitService } from './services/init.service';
+import { InitService } from './core/services/init.service';
 
 function initializeApp(initService: InitService) {
   return () =>
@@ -27,7 +28,9 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptors([errorInterceptor, loadingInterceptor])),
+    provideHttpClient(
+      withInterceptors([errorInterceptor, loadingInterceptor, authInterceptor]),
+    ),
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,
