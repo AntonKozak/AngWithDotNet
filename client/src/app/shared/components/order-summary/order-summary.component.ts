@@ -1,4 +1,4 @@
-import { CurrencyPipe, NgIf } from '@angular/common';
+import { CurrencyPipe, Location, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -25,4 +25,5 @@ import { CartService } from '../../../core/services/cart.service';
 })
 export class OrderSummaryComponent {
   cartService = inject(CartService);
+  location = inject(Location);
 }

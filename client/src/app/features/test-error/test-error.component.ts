@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
+import { MatStepperModule } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-test-error',
   standalone: true,
-  imports: [MatButton],
+  imports: [MatButton, MatStepperModule],
   templateUrl: './test-error.component.html',
   styleUrl: './test-error.component.scss',
 })

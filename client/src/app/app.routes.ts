@@ -5,6 +5,7 @@ import { AboutComponent } from './features/about/about.component';
 import { LoginComponent } from './features/account/login/login.component';
 import { RegisterComponent } from './features/account/register/register.component';
 import { CartComponent } from './features/cart/cart.component';
+import { CheckoutSuccessComponent } from './features/checkout/checkout-success/checkout-success.component';
 import { CheckoutComponent } from './features/checkout/checkout.component';
 import { ContactComponent } from './features/contact/contact.component';
 import { HomeComponent } from './features/home/home.component';
@@ -26,6 +27,7 @@ export const routes: Routes = [
     component: CheckoutComponent,
     canActivate: [authGuard, emptyCartGuard],
   },
+  { path: 'checkout/success', component: CheckoutSuccessComponent },
   { path: 'account/login', component: LoginComponent },
   { path: 'account/register', component: RegisterComponent },
   { path: 'error', component: TestErrorComponent },
