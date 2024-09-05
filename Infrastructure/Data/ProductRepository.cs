@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,7 @@ public class ProductRepository(StoreContext context) : IProductRepository
     public async Task<IReadOnlyList<Product>> GetProductsAsync(string? brand, string? type, string? sort)
     {
         var products = context.Products.AsQueryable();
+
 
         if (!string.IsNullOrWhiteSpace(brand))
             products = products.Where(p => p.Brand == brand);

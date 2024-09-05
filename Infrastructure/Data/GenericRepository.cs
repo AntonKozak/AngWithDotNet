@@ -44,11 +44,6 @@ public class GenericRepository<T>(StoreContext context) : IGenericRepository<T> 
         return context.Set<T>().Any(e => e.Id == id);
     }
 
-    public async Task<bool> SaveChangesAsync()
-    {
-        return await context.SaveChangesAsync() > 0;
-    }
-
     public void Add(T entity)
     {
         context.Set<T>().Add(entity);
