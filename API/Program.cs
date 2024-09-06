@@ -61,9 +61,14 @@ app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrig
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.MapControllers();
 app.MapGroup("api").MapIdentityApi<AppUser>();//adding api/ to endpoints
 app.MapHub<NotificationHub>("/hub/notifications");
+app.MapFallbackToFile("Index", "Fallback");
+
 try
 {
     using var scope = app.Services.CreateScope();
