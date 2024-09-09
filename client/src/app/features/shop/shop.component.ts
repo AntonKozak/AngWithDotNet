@@ -17,6 +17,7 @@ import { Product } from '../../shared/models/products';
 import { ShopParams } from '../../shared/models/shopParams';
 import { FiltersDialogComponent } from './filters-dialog/filters-dialog.component';
 import { ProductItemComponent } from './product-item/product-item.component';
+import { EmptyStateComponent } from "../../shared/components/empty-state/empty-state.component";
 
 @Component({
   selector: 'app-shop',
@@ -32,7 +33,8 @@ import { ProductItemComponent } from './product-item/product-item.component';
     MatMenuTrigger,
     MatPaginator,
     FormsModule,
-  ],
+    EmptyStateComponent
+],
   templateUrl: './shop.component.html',
   styleUrl: './shop.component.scss',
 })
@@ -57,6 +59,11 @@ export class ShopComponent implements OnInit {
   initializedShop() {
     this.shopService.getBrands();
     this.shopService.getTypes();
+    this.getProducts();
+  }
+
+  resetFilters() {
+    this.shopParams = new ShopParams();
     this.getProducts();
   }
 
