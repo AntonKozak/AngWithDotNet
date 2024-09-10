@@ -5,6 +5,7 @@ import { orderCompleteGuard } from './core/guards/order-complete.guard';
 import { AboutComponent } from './features/about/about.component';
 import { LoginComponent } from './features/account/login/login.component';
 import { RegisterComponent } from './features/account/register/register.component';
+import { AdminComponent } from './features/admin/admin.component';
 import { CartComponent } from './features/cart/cart.component';
 import { CheckoutSuccessComponent } from './features/checkout/checkout-success/checkout-success.component';
 import { CheckoutComponent } from './features/checkout/checkout.component';
@@ -19,6 +20,7 @@ import { NotFoundComponent } from './shared/components/not-found/not-found.compo
 import { ServerErrorComponent } from './shared/components/server-error/server-error.component';
 
 export const routes: Routes = [
+  { path: 'admin', component: AdminComponent, canActivate: [authGuard] },
   { path: '', component: HomeComponent },
   { path: 'shop', component: ShopComponent },
   { path: 'shop/:id', component: ProductDetailsComponent },

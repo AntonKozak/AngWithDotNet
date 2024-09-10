@@ -52,12 +52,14 @@ public class AccountController(SignInManager<AppUser> signInManager) : BaseApiCo
 
         var user = await signInManager.UserManager.GetUserByEmailWithaddress(User);
 
+
         return Ok(new
         {
             user.FirstName,
             user.LastName,
             user.Email,
-            Address = user.Address?.ToDto()
+            Address = user.Address?.ToDto(),
+            Roles = User.FindFirstValue(ClaimTypes.Role)
         });
     }
 
