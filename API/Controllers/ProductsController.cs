@@ -1,3 +1,4 @@
+using API.RequestHelpers;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specification;
@@ -8,6 +9,7 @@ namespace API.Controllers
 {
     public class ProductsController(IUnitOfWork unitOfWork) : BaseApiController
     {
+        [Cache(1600)]
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts([FromQuery] ProductSpecParams specParams)
         {
@@ -16,6 +18,7 @@ namespace API.Controllers
             return await CreatePagedResult(unitOfWork.Repository<Product>(), spec, specParams.PageIndex, specParams.PageSize);
         }
 
+        [Cache(1600)]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
@@ -29,6 +32,7 @@ namespace API.Controllers
             return product;
         }
 
+        [InvalidateCache("api/products|")]
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<Product>> CreateProduct(Product product)
@@ -43,6 +47,7 @@ namespace API.Controllers
             return BadRequest("Failed to create product, please try again or contact the administrator");
         }
 
+        [InvalidateCache("api/products|")]
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProduct(int id, Product product)
@@ -62,6 +67,7 @@ namespace API.Controllers
             return BadRequest("Failed to update product, please try again or contact the administrator");
         }
 
+        [InvalidateCache("api/products|")]
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
@@ -81,7 +87,7 @@ namespace API.Controllers
             return BadRequest("Failed to delete product, please try again or contact the administrator");
         }
 
-
+        [Cache(10000)]
         [HttpGet("brands")]
         public async Task<ActionResult<IReadOnlyList<string>>> GetBrands()
         {
@@ -90,6 +96,7 @@ namespace API.Controllers
             return Ok(await unitOfWork.Repository<Product>().ListAsync(spec));
         }
 
+        [Cache(10000)]
         [HttpGet("types")]
         public async Task<ActionResult<IReadOnlyList<string>>> GetTypes()
         {

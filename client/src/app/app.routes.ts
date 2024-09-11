@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { adminGuard } from './core/guards/admin.guard';
 import { authGuard } from './core/guards/auth.guard';
 import { emptyCartGuard } from './core/guards/empty-cart.guard';
 import { orderCompleteGuard } from './core/guards/order-complete.guard';
@@ -20,23 +21,18 @@ import { NotFoundComponent } from './shared/components/not-found/not-found.compo
 import { ServerErrorComponent } from './shared/components/server-error/server-error.component';
 
 export const routes: Routes = [
-  { path: 'admin', component: AdminComponent, canActivate: [authGuard] },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [authGuard, adminGuard],
+  },
   { path: '', component: HomeComponent },
   { path: 'shop', component: ShopComponent },
   { path: 'shop/:id', component: ProductDetailsComponent },
   { path: 'cart', component: CartComponent },
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactComponent },
-  {
-    path: 'checkout',
-    component: CheckoutComponent,
-    canActivate: [authGuard, emptyCartGuard],
-  },
-  {
-    path: 'checkout/success',
-    component: CheckoutSuccessComponent,
-    canActivate: [authGuard, orderCompleteGuard],
-  },
+ {path: 'checkout', loadChildren: () => import('./features/checkout/routes').then(mod => mod.checkoutRoutes)},
   { path: 'account/login', component: LoginComponent },
   { path: 'account/register', component: RegisterComponent },
   { path: 'orders', component: OrderComponent, canActivate: [authGuard] },
@@ -45,7 +41,7 @@ export const routes: Routes = [
     component: OrderDetailedComponent,
     canActivate: [authGuard],
   },
-  { path: 'error', component: TestErrorComponent },
+  { path: 'error', component: TestErrorComponent, canActivate: [adminGuard] },
   { path: 'not-found', component: NotFoundComponent },
   { path: 'server-error', component: ServerErrorComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' },

@@ -3,15 +3,23 @@ using API.Extensions;
 using Core.Entities.OrderAggregate;
 using Core.Interfaces;
 using Core.Specification;
-using Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
 [Authorize(Roles = "Admin")]
-public class AdminController(IUnitOfWork unitOfWork) : BaseApiController
+public class AdminController : BaseApiController
 {
+
+    private readonly IUnitOfWork unitOfWork;
+    private readonly IPaymentService paymentService;
+
+    public AdminController(IUnitOfWork unitOfWork, IPaymentService paymentService)
+    {
+        this.unitOfWork = unitOfWork;
+        this.paymentService = paymentService;
+    }
 
     [HttpGet("orders")]
     public async Task<ActionResult<IReadOnlyList<OrderDto>>> GetOrders([FromQuery] OrderSpecParams specParams)
@@ -28,25 +36,30 @@ public class AdminController(IUnitOfWork unitOfWork) : BaseApiController
         return order == null ? NotFound() : Ok(order.ToDto());
     }
 
-    [HttpPost("orders/refund/{paymentIntentId}")]
-    public async Task<ActionResult<OrderDto>> RefundOrder(string paymentIntentId, IPaymentService paymentService)
+    [HttpPost("orders/refund/{id:int}")]
+    public async Task<ActionResult<OrderDto>> RefundOrder(int id)
     {
-        var spec = new OrderSpecification(paymentIntentId);
+        var spec = new OrderSpecification(id);
+
         var order = await unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
 
-        if (order == null) return NotFound("NoContent order with this id found");
+        if (order == null) return BadRequest("No order with that id");
 
-        if (order.Status == OrderStatus.Pending) return BadRequest("Order has already been refunded or not recived money for it");
+        if (order.Status == OrderStatus.Pending)
+            return BadRequest("Payment not received for this order");
 
         var result = await paymentService.RefundPayment(order.PaymentId);
 
         if (result == "succeeded")
         {
             order.Status = OrderStatus.PaymentRefunded;
+
             await unitOfWork.Complete();
-            return Ok(order.ToDto());
+
+            return order.ToDto();
         }
 
-        return BadRequest("Refund failed");
+        return BadRequest("Problem refunding order");
     }
+
 }

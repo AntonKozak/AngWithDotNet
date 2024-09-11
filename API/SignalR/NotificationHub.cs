@@ -15,6 +15,7 @@ public class NotificationHub : Hub
         var email = Context.User?.FindFirstValue(ClaimTypes.Email);
 
         if (!string.IsNullOrEmpty(email)) UserConnections[email] = Context.ConnectionId;
+        Console.WriteLine($"User {email} connected with connection id {Context.ConnectionId} SignalR OnConnectedAsync");
 
         return base.OnConnectedAsync();
     }
@@ -31,6 +32,7 @@ public class NotificationHub : Hub
     public static string? GetConnectionIdByEmail(string email)
     {
         UserConnections.TryGetValue(email, out var connectionId);
+        Console.WriteLine($"User {email} has connection id {connectionId} SignalR GetConnectionIdByEmail");
         return connectionId;
 
     }

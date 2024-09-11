@@ -16,8 +16,10 @@
       <a routerLink="/shop" routerLinkActive="active"> SHOP </a>
       <a routerLink="/about" routerLinkActive="active"> ABOUT </a>
       <a routerLink="/contact" routerLinkActive="active"> Contact </a>
-      <a routerLink="/error" routerLinkActive="active"> Test Error </a>
-      <a routerLink="/admin" routerLinkActive="active"> Admin </a>
+      <a *appIsAdmin routerLink="/error" routerLinkActive="active">
+        Test Error
+      </a>
+      <a *appIsAdmin routerLink="/admin" routerLinkActive="active"> Admin </a>
     </nav>
 
     <div class="flex gap-3 align-middle">

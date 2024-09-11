@@ -11,6 +11,7 @@ import { MatDivider } from '@angular/material/divider';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatMenu } from '@angular/material/menu';
 import { MatMenuItem } from '@angular/material/menu';
+import { IsAdminDirective } from '../../shared/directives/is-admin.directive';
 
 @Component({
   selector: 'app-header',
@@ -25,7 +26,9 @@ import { MatMenuItem } from '@angular/material/menu';
     MatMenuTrigger,
     MatMenu,
     MatDivider,
-    MatMenuItem
+    MatMenuItem,
+    IsAdminDirective,
+
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',

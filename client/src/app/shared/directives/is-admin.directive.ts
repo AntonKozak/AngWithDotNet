@@ -1,11 +1,28 @@
-import { Directive } from '@angular/core';
+import {
+  Directive,
+  effect,
+  inject,
+  TemplateRef,
+  ViewContainerRef,
+} from '@angular/core';
+import { AccountService } from '../../core/services/account.service';
 
 @Directive({
   selector: '[appIsAdmin]',
-  standalone: true
+  standalone: true,
 })
 export class IsAdminDirective {
+  private accounterService = inject(AccountService);
+  private viewContainerRef = inject(ViewContainerRef);
+  private templateRef = inject(TemplateRef);
 
-  constructor() { }
-
+  constructor() {
+    effect(() => {
+      if (this.accounterService.isAdmin()) {
+        this.viewContainerRef.createEmbeddedView(this.templateRef);
+      } else {
+        this.viewContainerRef.clear();
+      }
+    });
+  }
 }
