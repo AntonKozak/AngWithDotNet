@@ -1,18 +1,17 @@
+import { OverlayModule } from '@angular/cdk/overlay';
+import { NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatBadge } from '@angular/material/badge';
 import { MatButton } from '@angular/material/button';
+import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AccountService } from '../../core/services/account.service';
 import { BusyService } from '../../core/services/busy.service';
 import { CartService } from '../../core/services/cart.service';
-import { MatDivider } from '@angular/material/divider';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { MatMenu } from '@angular/material/menu';
-import { MatMenuItem } from '@angular/material/menu';
 import { IsAdminDirective } from '../../shared/directives/is-admin.directive';
-
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -28,7 +27,8 @@ import { IsAdminDirective } from '../../shared/directives/is-admin.directive';
     MatDivider,
     MatMenuItem,
     IsAdminDirective,
-
+    NgIf,
+    OverlayModule,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -46,5 +46,8 @@ export class HeaderComponent {
         this.router.navigateByUrl('/');
       },
     });
+  }
+  checkMatButton() {
+    return console.log('This is drop down menu');
   }
 }

@@ -36,8 +36,8 @@ export class LoginComponent {
   }
 
   loginForm = this.fb.group({
-    email: [''],
-    password: [''],
+    email: ['tom@test.com'],
+    password: ['Pa$$w0rd'],
   });
 
   onSubmit() {

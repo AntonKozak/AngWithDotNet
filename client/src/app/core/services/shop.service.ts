@@ -13,6 +13,7 @@ export class ShopService {
   private http = inject(HttpClient);
   types: string[] = [];
   brands: string[] = [];
+  products: Product[] = [];
 
   getProducts(shopParams: ShopParams) {
     let params = new HttpParams();
@@ -67,5 +68,13 @@ export class ShopService {
         this.types = response;
       },
     });
+  }
+  updateProduct(product: Product) {
+    return this.http.put(this.baseUrl + 'products', product);
+  }
+
+  deleteProduct(id: number) {
+    console.log('Deleting product');
+    return this.http.delete(this.baseUrl + 'products/' + id);
   }
 }

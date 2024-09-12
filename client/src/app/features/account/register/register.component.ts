@@ -41,12 +41,7 @@ export class RegisterComponent {
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    password: [
-      '',
-      Validators.required,
-      Validators.minLength(6),
-      Validators.pattern('(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,}'),
-    ],
+    password: ['', Validators.required],
   });
 
   onSubmit() {

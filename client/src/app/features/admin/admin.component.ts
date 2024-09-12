@@ -49,7 +49,7 @@ export class AdminComponent implements OnInit {
   private dialogService = inject(DialogService);
   orderParams = new OrderParams();
   totalItems = 0;
-  statusOptions = ['All', 'PaymentReceived', 'Refunded', 'Pending'];
+  statusOptions = ['All', 'PaymentReceived', 'PaymentRefunded', 'Pending'];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 

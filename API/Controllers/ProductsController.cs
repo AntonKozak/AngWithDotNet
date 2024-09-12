@@ -77,6 +77,7 @@ namespace API.Controllers
             {
                 return NotFound();
             }
+            Console.WriteLine("DeleteProduct- API");
 
             unitOfWork.Repository<Product>().Remove(product);
             if (await unitOfWork.Complete())

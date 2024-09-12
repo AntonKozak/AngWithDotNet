@@ -7,14 +7,14 @@
         }
       </div>
       <div class="w-1/4">
-        <app-order-summary> </app-order-summary>
+        <app-order-summary></app-order-summary>
       </div>
     </div>
   } @else {
     <app-empty-state
-      message="Your cart is empty"
+      message="Your shopping cart is empty"
       icon="remove_shopping_cart"
-      actionText="Start shopping"
+      actionText="Go to shop"
       (action)="onAction()"
     />
   }
