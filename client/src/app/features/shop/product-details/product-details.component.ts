@@ -2,7 +2,6 @@ import { CurrencyPipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatDivider } from '@angular/material/divider';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
@@ -27,7 +26,6 @@ import { Product } from '../../../shared/models/products';
     FormsModule,
     IsAdminDirective,
     ReactiveFormsModule,
-    MatDialogModule,
   ],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.scss',
@@ -36,10 +34,10 @@ export class ProductDetailsComponent implements OnInit {
   private shopSrvice = inject(ShopService);
   private activatedRoute = inject(ActivatedRoute);
   private cartService = inject(CartService);
-  readonly dialog = inject(MatDialog);
   product?: Product;
   quantityInCart = 0;
   quantity = 1;
+
   ngOnInit() {
     this.loadProduct();
   }
