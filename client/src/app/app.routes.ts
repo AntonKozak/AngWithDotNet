@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { adminGuard } from './core/guards/admin.guard';
 import { AboutComponent } from './features/about/about.component';
+import { AddProductComponent } from './features/admin/add-product/add-product.component';
 import { CartComponent } from './features/cart/cart.component';
 import { ContactComponent } from './features/contact/contact.component';
 import { HomeComponent } from './features/home/home.component';
@@ -38,6 +39,11 @@ export const routes: Routes = [
     path: 'admin',
     loadComponent: () =>
       import('./features/admin/admin.component').then((m) => m.AdminComponent),
+    canActivate: [adminGuard, adminGuard],
+  },
+  {
+    path: 'add-product',
+    component: AddProductComponent,
     canActivate: [adminGuard, adminGuard],
   },
   { path: 'error', component: TestErrorComponent, canActivate: [adminGuard] },

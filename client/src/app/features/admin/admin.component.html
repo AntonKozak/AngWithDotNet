@@ -1,5 +1,16 @@
 <div class="min-h-screen">
-  <mat-tab-group class="bg-white">
+  <div class="flex justify-end mr-6">
+    <button
+      mat-flat-button
+      routerLink="/add-product"
+      class="match-input-height"
+    >
+      <mat-icon>add</mat-icon>
+      Add Product
+    </button>
+  </div>
+
+  <mat-tab-group class="bg-white mr-6 ml-6">
     <mat-tab label="Orders">
       <div
         class="flex justify-between items-center mt-2 max-w-screen-2xl mx-auto"
