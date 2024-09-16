@@ -6,6 +6,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AccountService } from '../../../core/services/account.service';
 import { AdminService } from '../../../core/services/admin.service';
 import { OrderService } from '../../../core/services/order.service';
+import { IsAdminDirective } from '../../../shared/directives/is-admin.directive';
 import { Order } from '../../../shared/models/order';
 import { AddressPipe } from '../../../shared/pipes/address.pipe';
 import { PaymentPipe } from '../../../shared/pipes/payment.pipe';
@@ -21,6 +22,7 @@ import { PaymentPipe } from '../../../shared/pipes/payment.pipe';
     AddressPipe,
     RouterLink,
     PaymentPipe,
+    IsAdminDirective,
   ],
   templateUrl: './order-detailed.component.html',
   styleUrl: './order-detailed.component.scss',

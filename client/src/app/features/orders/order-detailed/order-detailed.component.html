@@ -5,7 +5,7 @@
         <h2 class="text-2xl text-center font-semibold">
           Order summary for order #{{ order.id }}
         </h2>
-        <button (click)="onReturnClick()" mat-stroked-button>
+        <button *appIsAdmin (click)="onReturnClick()" mat-stroked-button>
           {{ buttonText }}
         </button>
       </div>
