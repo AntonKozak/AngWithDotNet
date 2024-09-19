@@ -5,7 +5,9 @@ import { MatButton } from '@angular/material/button';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 import { CartService } from '../../../core/services/cart.service';
+import { StripeService } from '../../../core/services/stripe.service';
 
 @Component({
   selector: 'app-order-summary',
@@ -25,5 +27,36 @@ import { CartService } from '../../../core/services/cart.service';
 })
 export class OrderSummaryComponent {
   cartService = inject(CartService);
+  private stripeService = inject(StripeService);
   location = inject(Location);
+  code?: string;
+
+  applyCouponCode() {
+    if (!this.code) return;
+    this.cartService.addDiscount(this.code).subscribe({
+      next: async (coupon) => {
+        const cart = this.cartService.cart();
+        if (cart) {
+          cart.coupon = coupon;
+          await firstValueFrom(this.cartService.setCart(cart));
+          this.code = undefined;
+          if (this.location.path() === '/checkout') {
+            await firstValueFrom(
+              this.stripeService.createOrUpdatePaymentIntent(),
+            );
+          }
+        }
+      },
+    });
+  }
+
+  async removeCouponCode() {
+    const cart = this.cartService.cart();
+    if (!cart) return;
+    if (cart.coupon) cart.coupon = undefined;
+    await firstValueFrom(this.cartService.setCart(cart));
+    if (this.location.path() === '/checkout') {
+      await firstValueFrom(this.stripeService.createOrUpdatePaymentIntent());
+    }
+  }
 }

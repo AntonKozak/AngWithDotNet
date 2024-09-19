@@ -29,8 +29,11 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.Property(x => x.Subtotal)
                .HasColumnType("decimal(18,2)");
 
+        builder.Property(x => x.Discount)
+               .HasColumnType("decimal(18,2)");
+
         builder.HasMany(o => o.OrderItems).WithOne().OnDelete(DeleteBehavior.Cascade);
-        
+
         builder.Property(x => x.OrderDate)
         .HasConversion(d => d.ToUniversalTime(), d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
     }

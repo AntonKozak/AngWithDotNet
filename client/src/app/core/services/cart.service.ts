@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { firstValueFrom, map, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Cart, CartItem } from '../../shared/models/cart';
+import { Cart, CartItem, Coupon } from '../../shared/models/cart';
 import { DeliveryMethod } from '../../shared/models/deliveryMethod';
 import { Product } from '../../shared/models/products';
 
@@ -27,6 +27,16 @@ export class CartService {
       0,
     );
 
+    let discountValue = 0;
+
+    if (cart.coupon) {
+      if (cart.coupon.amountOff) {
+        discountValue = cart.coupon.amountOff;
+      } else if (cart.coupon.percentOff) {
+        discountValue = subtotal * (cart.coupon.percentOff / 100);
+      }
+    }
+
     const shipping = delivery ? delivery.price : 0;
     const discount = 0;
 
@@ -34,8 +44,8 @@ export class CartService {
     return {
       subtotal,
       shipping,
-      discount,
-      total: subtotal + shipping - discount,
+      discount: discountValue,
+      total: subtotal + shipping - discountValue,
     };
   });
 
@@ -82,6 +92,10 @@ export class CartService {
     } else {
       await firstValueFrom(this.setCart(cart));
     }
+  }
+
+  addDiscount(code: string) {
+    return this.http.get<Coupon>(this.baseUrl + 'coupons/' + code);
   }
 
   deleteCart() {
