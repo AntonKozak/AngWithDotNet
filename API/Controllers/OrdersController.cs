@@ -58,12 +58,14 @@ public class OrdersController(ICartService cartService, IUnitOfWork unitOfWork) 
         {
             return BadRequest("Delivery method not found");
         }
+
         var order = new Order
         {
             OrderItems = items,
             DeliveryMethod = deliveryMethod,
             ShipToAddress = orderDto.ShippingAddress,
             Subtotal = items.Sum(i => i.Price * i.Quantity),
+            Discount = orderDto.Discount ?? 0,
             PaymentSummary = orderDto.PaymentSummary,
             PaymentId = cart.PaymentIntentId,
             BuyerEmail = email
