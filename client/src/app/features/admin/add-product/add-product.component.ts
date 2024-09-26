@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { ShopService } from '../../../core/services/shop.service';
 import { SnackbarService } from '../../../core/services/snackbar.service';
 import { TextInputComponent } from '../../../shared/components/text-input/text-input.component';
+import { Product } from '../../../shared/models/products';
 
 @Component({
   selector: 'app-add-product',
@@ -46,4 +47,21 @@ export class AddProductComponent {
     brand: ['', Validators.required],
     quantityStock: ['', Validators.required],
   });
+
+  onSubmit() {
+    console.log(this.addProductForm.value);
+    
+    if (this.addProductForm.valid) {    
+      this.shopService.addProduct(this.addProductForm.value).subscribe({
+        next: () => {
+          this.snack.success('Product added successfully!');
+          this.router.navigate(['/shop']);
+        },
+        error: (err) => {
+          this.validationErrors = err;
+          this.snack.error('Failed to add product');
+        },
+      });
+    }
+  }
 }

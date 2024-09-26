@@ -69,12 +69,21 @@ export class ShopService {
       },
     });
   }
-  updateProduct(product: Product) {
-    return this.http.put(this.baseUrl + 'products', product);
+
+  addProduct(product: any) {
+    return this.http.post(this.baseUrl + 'products', product);
+  }
+
+  updateProduct(productId: any, product: any) {
+    return this.http.put(this.baseUrl + 'products/' + productId, product);
   }
 
   deleteProduct(id: number) {
     console.log('Deleting product');
     return this.http.delete(this.baseUrl + 'products/' + id);
+  }
+
+  getProductWithPictures(id: number) {
+    return this.http.get<Product>(this.baseUrl + 'Products/with-photos/' + id);
   }
 }

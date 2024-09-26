@@ -13,9 +13,11 @@ public class StoreContext(DbContextOptions options) : IdentityDbContext<AppUser>
     public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
+    public DbSet<Photo> Photos { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ProductConfguration).Assembly);
+
     }
 }

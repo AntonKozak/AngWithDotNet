@@ -1,73 +1,109 @@
 @if (product) {
   <section class="py-8">
-    <div class="max-w-screen-2xl px-4 mx-auto">
-      <div class="grid grid-cols-2 gap-8">
-        <div class="max-w-xl mx-auto">
-          <img
-            class="w-full"
-            src="{{ product.pictureUrl }}"
-            alt="{{ product.name }}"
-          />
-        </div>
-        <div>
-          <div class="flex items-center space-x-4">
-            <h1 class="text-2xl font-semibold text-gray-900">
-              {{ product.name }}
-            </h1>
-
-            <button *appIsAdmin mat-flat-button class="match-input-height">
-              <mat-icon>refresh</mat-icon>
-              Change name
-            </button>
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+      <div class="max-w-screen-2xl px-4 mx-auto">
+        <div class="grid grid-cols-2 gap-8">
+          <div class="max-w-xl mx-auto">
+            <img
+              class="w-full"
+              src="{{ product.pictureUrl }}"
+              alt="{{ product.name }}"
+            />
           </div>
+          <div>
+            <div class="flex items-center space-x-4">
+              <input
+                formControlName="name"
+                type="text"
+                class="text-2xl font-semibold text-black-900"
+                placeholder="{{ product.name }}"
+                [readonly]="!isAdmin"
+              />
+            </div>
 
-          <p>You have {{ quantityInCart }} in your cart.</p>
+            <p>You have {{ quantityInCart }} in your cart.</p>
 
-          <div class="mt-4 items-center gap-4 flex">
-            <p class="text-3xl font-extrabold text-gray-900">
-              {{ product.price | currency }}
-            </p>
+            <div class="mt-4 items-center gap-4 flex">
+              <input
+                formControlName="price"
+                type="number"
+                class="text-4xl font-semibold text-black-900"
+                placeholder="{{ product.price | currency }}"
+                [readonly]="!isAdmin"
+              />
+            </div>
 
-            <button *appIsAdmin mat-flat-button class="match-input-height">
-              <mat-icon>refresh</mat-icon>
-              Change price
-            </button>
+            <div class="flex gap-4 mt-6">
+              <button
+                [disabled]="quantity === quantityInCart"
+                (click)="updateCart()"
+                mat-flat-button
+                class="match-input-height"
+              >
+                <mat-icon>shopping_cart</mat-icon>
+                {{ getButtonText() }}
+              </button>
+
+              <mat-form-field appearance="outline" class="flex">
+                <mat-label>Quantity</mat-label>
+                <input
+                  matInput
+                  min="0"
+                  [(ngModel)]="quantity"
+                  type="number"
+                  formControlName="quantityInStock"
+                />
+              </mat-form-field>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <textarea
+              formControlName="description"
+              class="mt-6 text-1xl font-semibold text-black-600 w-full"
+              placeholder="{{ product.description }}"
+              [readonly]="!isAdmin"
+              rows="5"
+              (input)="autoResize($event)"
+            ></textarea>
+
+            <div *ngIf="isAdmin">
+              <h3 class="mt-6">Type:</h3>
+              <input
+                formControlName="type"
+                type="text"
+                class="text-3xl font-semibold text-black-900"
+                placeholder="{{ product.type }}"
+              />
+
+              <h3 class="mt-6">Brand:</h3>
+              <input
+                formControlName="brand"
+                type="text"
+                class="text-3xl font-semibold text-black-900"
+                placeholder="{{ product.brand }}"
+              />
+
+              <h3 class="mt-6">Picture:</h3>
+              <textarea
+                formControlName="pictureUrl"
+                class="text-1xl font-semibold text-black-600 w-full"
+                placeholder="{{ product.pictureUrl }}"
+                rows="1"
+                (input)="autoResize($event)"
+              ></textarea>
+            </div>
           </div>
+          <app-photo-editor
+            [products]="product"
+            (productChange)="onProductChange($event)"
+          ></app-photo-editor>
 
-          <div class="flex gap-4 mt-6">
-            <button
-              [disabled]="quantity === quantityInCart"
-              (click)="updateCart()"
-              mat-flat-button
-              class="match-input-height"
-            >
-              <mat-icon>shopping_cart</mat-icon>
-              {{ getButtonText() }}
-            </button>
-
-            <mat-form-field appearance="outline" class="flex">
-              <mat-label>Quantity</mat-label>
-              <input matInput min="0" [(ngModel)]="quantity" type="number" />
-            </mat-form-field>
-
-            <button *appIsAdmin mat-flat-button class="match-input-height">
-              <mat-icon>refresh</mat-icon>
-              Change quantity
-            </button>
-          </div>
-
-          <mat-divider></mat-divider>
-
-          <p class="mt-6 text-gray-500">
-            {{ product.description }}
-          </p>
-
-          <button *appIsAdmin mat-flat-button class="match-input-height">
-            <mat-icon>refresh</mat-icon>
-            Change description
+          <button mat-flat-button type="submit" class="flex-end mt-4">
+            Update product
           </button>
         </div>
       </div>
-    </div>
+    </form>
   </section>
 }

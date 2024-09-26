@@ -77,4 +77,9 @@ public class GenericRepository<T>(StoreContext context) : IGenericRepository<T> 
 
         return await query.CountAsync();
     }
+
+    public async Task<Product?> GetByIdWithPhotoAsync(int id)
+    {
+        return await context.Set<Product>().Include(p => p.Photos).FirstOrDefaultAsync(p => p.Id == id);
+    }
 }

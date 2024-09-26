@@ -1,3 +1,4 @@
+using API.DTOs;
 using API.RequestHelpers;
 using Core.Entities;
 using Core.Interfaces;
@@ -7,9 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    public class ProductsController(IUnitOfWork unitOfWork) : BaseApiController
+    public class ProductsController(IUnitOfWork unitOfWork, IPhotoService photoService) : BaseApiController
     {
-        [Cache(1600)]
+        [Cache(160)]
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts([FromQuery] ProductSpecParams specParams)
         {
@@ -18,7 +19,39 @@ namespace API.Controllers
             return await CreatePagedResult(unitOfWork.Repository<Product>(), spec, specParams.PageIndex, specParams.PageSize);
         }
 
-        [Cache(1600)]
+        [HttpGet("with-photos/{id:int}")]
+        public async Task<ActionResult<ProductDto>> GetProductWithPhoto(int id)
+        {
+            var product = await unitOfWork.Repository<Product>().GetByIdWithPhotoAsync(id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            var productDto = new ProductDto
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                PictureUrl = product.PictureUrl,
+                Type = product.Type,
+                Brand = product.Brand,
+                QuantityInStock = product.QuantityInStock,
+                Photos = product.Photos.Select(p => new PhotoDto
+                {
+                    Id = p.Id,
+                    Url = p.Url,
+                    IsMain = p.IsMain
+                }).ToList()
+            };
+
+            return Ok(productDto);
+        }
+
+
+        [Cache(160)]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
@@ -111,5 +144,40 @@ namespace API.Controllers
             return unitOfWork.Repository<Product>().Exists(id);
         }
 
+
+        [HttpPost("{productId}/add-photo")]
+        public async Task<ActionResult<PhotoDto>> AddPhoto(int productId, IFormFile file)
+        {
+            var product = await unitOfWork.Repository<Product>().GetByIdAsync(productId);
+            if (product == null) return NotFound();
+
+            var result = await photoService.AddPhotoAsync(file);
+            if (result.Error != null)
+            {
+                return BadRequest(result.Error.Message);
+            }
+
+            var photo = new Photo
+            {
+                PublicId = result.PublicId,
+                Url = result.SecureUrl.AbsoluteUri,
+            };
+
+            product.PictureUrl = photo.Url;
+            product.Photos.Add(photo);
+
+
+            if (await unitOfWork.Complete())
+            {
+                return CreatedAtAction(nameof(GetProduct), new { id = productId }, new PhotoDto
+                {
+                    Id = photo.Id,
+                    Url = photo.Url,
+                    IsMain = photo.IsMain
+                });
+            }
+
+            return BadRequest("Problem adding photo");
+        }
     }
 }

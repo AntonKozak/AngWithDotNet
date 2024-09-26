@@ -7,12 +7,14 @@ import { ContactComponent } from './features/contact/contact.component';
 import { HomeComponent } from './features/home/home.component';
 import { TestErrorComponent } from './features/test-error/test-error.component';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
+import { PhotoEditorComponent } from './shared/components/photo-editor/photo-editor.component';
 import { ServerErrorComponent } from './shared/components/server-error/server-error.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
 
   { path: 'cart', component: CartComponent },
+  { path: 'uploader', component: PhotoEditorComponent },
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactComponent },
   {

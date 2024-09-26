@@ -1,3 +1,5 @@
+import { Photo } from './photo';
+
 export interface Product {
   id: number;
   name: string;
@@ -7,4 +9,7 @@ export interface Product {
   type: string;
   brand: string;
   quantityInStock: number;
+  isMain: boolean;
+  url: string;
+  photos: Photo[];
 }

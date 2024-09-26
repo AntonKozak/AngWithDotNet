@@ -22,6 +22,8 @@ public class ProductSpecParams : PagincParams
         }
     }
 
+
+
     public string? Sort { get; set; }
 
     private string? _search;

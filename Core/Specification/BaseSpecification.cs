@@ -38,7 +38,7 @@ public class BaseSpecification<T>(Expression<Func<T, bool>>? criteria) : ISpecif
         Includes.Add(includeExpression);
     }
 
-    protected void addInclude(string includeString)
+    protected void AddInclude(string includeString)
     {
         IncludeStrings.Add(includeString);
     }
