@@ -1,5 +1,6 @@
 import { DecimalPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { Component, inject, input, OnInit, output } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import { FileUploader, FileUploadModule } from 'ng2-file-upload';
 import { environment } from '../../../../environments/environment';
 import { ShopService } from '../../../core/services/shop.service';
@@ -8,7 +9,15 @@ import { Product } from '../../models/products';
 @Component({
   selector: 'app-photo-editor',
   standalone: true,
-  imports: [NgIf, NgFor, NgStyle, NgClass, DecimalPipe, FileUploadModule],
+  imports: [
+    NgIf,
+    NgFor,
+    NgStyle,
+    NgClass,
+    DecimalPipe,
+    FileUploadModule,
+    MatButton,
+  ],
   templateUrl: './photo-editor.component.html',
   styleUrl: './photo-editor.component.scss',
 })
@@ -21,7 +30,10 @@ export class PhotoEditorComponent implements OnInit {
   hasBaseDropZoneOver = false;
   baseUrl = environment.apiUrl;
 
-  ngOnInit() {
+  constructor() {
+    this.initializeUploader;
+  }
+  ngOnInit(): void {
     this.initializeUploader();
   }
 

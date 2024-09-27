@@ -1,89 +1,125 @@
-<div>
+<div class="row">
   @for (photo of products().photos; track photo.id) {
-    <div>
-      <img src="{{ photo.url }}" alt="{{ products().name }}" />
+    <div class="col-2 img-wrapper">
+      <img
+        src="{{ photo.url }}"
+        alt="{{ products().name }} "
+        class="img-thumbnail mb-1"
+      />
     </div>
   }
 </div>
+<div class="container mx-auto p-4">
+  <div class="row">
+    <div class="col-md-3">
+      <h3 class="text-lg font-semibold mb-4">Select files</h3>
 
-<div class="row mt-5">
-  <div class="col-md-3">
-    <h3>Add Photos</h3>
-
-    <div
-      ng2FileDrop
-      [ngClass]="{ 'nv-file-over': hasBaseDropZoneOver }"
-      (fileOver)="fileOverBase($event)"
-      [uploader]="uploader"
-      class="card bg-faded p-5 text-center my-drop-zone"
-    >
-      <i class="fa fa-upload fa-3x"></i>
-      Drop photos here
-    </div>
-  </div>
-
-  <div
-    class="col-md-9"
-    style="margin-bottom: 40px"
-    *ngIf="uploader?.queue?.length"
-  >
-    <h3>Upload queue</h3>
-    <p>Queue length: {{ uploader?.queue?.length }}</p>
-
-    <table class="table">
-      <thead>
-        <tr>
-          <th width="50%">Name</th>
-          <th>Size</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of uploader?.queue">
-          <td>
-            <strong>{{ item?.file?.name }}</strong>
-          </td>
-          <td *ngIf="uploader?.options?.isHTML5" nowrap>
-            {{ item?.file?.size / 1024 / 1024 | number: ".2" }} MB
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div>
-      <div>
-        Queue progress:
-        <div class="progress">
-          <div
-            class="progress-bar"
-            role="progressbar"
-            [ngStyle]="{ width: uploader?.progress + '%' }"
-          ></div>
-        </div>
+      <div
+        ng2FileDrop
+        [ngClass]="{ 'nv-file-over': hasBaseDropZoneOver }"
+        (fileOver)="fileOverBase($event)"
+        [uploader]="uploader"
+        class="well my-drop-zone border-2 border-dashed border-gray-300 p-4 rounded-lg text-center bg-gray-50"
+      >
+        <p class="text-gray-600">Drop files here or click to upload</p>
       </div>
-      <button
-        type="button"
-        class="btn btn-success btn-s"
-        (click)="uploader?.uploadAll()"
-        [disabled]="!uploader?.getNotUploadedItems()?.length"
+    </div>
+
+    <div class="col-md-9" style="margin-bottom: 40px">
+      <table
+        class="table table-auto w-full bg-white shadow-md rounded-lg overflow-hidden"
       >
-        <span class="fa fa-upload"></span> Upload all
-      </button>
-      <button
-        type="button"
-        class="btn btn-warning btn-s"
-        (click)="uploader?.cancelAll()"
-        [disabled]="!uploader?.isUploading"
-      >
-        <span class="fa fa-ban"></span> Cancel all
-      </button>
-      <button
-        type="button"
-        class="btn btn-danger btn-s"
-        (click)="uploader?.clearQueue()"
-        [disabled]="!uploader?.queue?.length"
-      >
-        <span class="fa fa-trash"></span> Remove all
-      </button>
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="py-2 px-4">Name</th>
+            <th class="py-2 px-4">Size</th>
+            <th class="py-2 px-4">Progress</th>
+            <th class="py-2 px-4 text-center">Status</th>
+            <th class="py-2 px-4 text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of uploader!.queue">
+            <td class="py-2 px-4">
+              <strong>{{ item?.file?.name }}</strong>
+            </td>
+            <td *ngIf="uploader!.options.isHTML5" class="py-2 px-4" nowrap>
+              {{ item?.file?.size / 1024 / 1024 | number: ".2" }} MB
+            </td>
+            <td *ngIf="uploader!.options.isHTML5" class="py-2 px-4">
+              <div class="progress">
+                <div
+                  class="progress-bar bg-blue-500 h-2"
+                  role="progressbar"
+                  [ngStyle]="{ width: item.progress + '%' }"
+                ></div>
+              </div>
+            </td>
+            <td class="text-center py-2 px-4">
+              <span *ngIf="item.isSuccess" class="text-green-500">
+                <i class="glyphicon glyphicon-ok"></i>
+              </span>
+              <span *ngIf="item.isCancel" class="text-yellow-500">
+                <i class="glyphicon glyphicon-ban-circle"></i>
+              </span>
+              <span *ngIf="item.isError" class="text-red-500">
+                <i class="glyphicon glyphicon-remove"></i>
+              </span>
+            </td>
+            <td class="text-center py-2 px-4">
+              <button
+                type="button"
+                class="btn btn-success btn-xs bg-green-500 text-white rounded hover:bg-green-600 transition duration-200 py-1 px-2"
+                (click)="item.upload()"
+                [disabled]="item.isReady || item.isUploading || item.isSuccess"
+              >
+                <span class="glyphicon glyphicon-upload"></span> Upload
+              </button>
+              <button
+                type="button"
+                class="btn btn-warning btn-xs bg-yellow-500 text-white rounded hover:bg-yellow-600 transition duration-200 py-1 px-2 ml-2"
+                (click)="item.cancel()"
+                [disabled]="!item.isUploading"
+              >
+                <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="my-4">
+        <div>
+          <span>Queue progress:</span>
+          <div class="progress">
+            <div
+              class="progress-bar bg-blue-500 h-2"
+              role="progressbar"
+              [ngStyle]="{ width: uploader!.progress + '%' }"
+            ></div>
+          </div>
+        </div>
+
+        <button
+          mat-flat-button
+          type="button"
+          class="mr-6 bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-700 transition duration-200"
+          (click)="uploader!.uploadAll()"
+          [disabled]="!uploader!.getNotUploadedItems().length"
+        >
+          <span class="glyphicon glyphicon-upload"></span> Upload all
+        </button>
+
+        <button
+          mat-raised-button
+          type="button"
+          class="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 transition duration-200"
+          (click)="uploader!.cancelAll()"
+          [disabled]="!uploader!.isUploading"
+        >
+          <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+        </button>
+      </div>
     </div>
   </div>
 </div>
