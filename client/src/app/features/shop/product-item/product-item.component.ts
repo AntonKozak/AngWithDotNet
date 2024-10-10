@@ -1,4 +1,4 @@
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, NgIf } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import {
@@ -25,6 +25,7 @@ import { Product } from '../../../shared/models/products';
     MatIcon,
     RouterLink,
     IsAdminDirective,
+    NgIf,
   ],
   templateUrl: './product-item.component.html',
   styleUrl: './product-item.component.scss',

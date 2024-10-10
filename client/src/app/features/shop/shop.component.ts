@@ -1,3 +1,4 @@
+import { NgFor, NgIf } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -12,12 +13,12 @@ import {
 import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ShopService } from '../../core/services/shop.service';
+import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
 import { Pagination } from '../../shared/models/pagination';
 import { Product } from '../../shared/models/products';
 import { ShopParams } from '../../shared/models/shopParams';
 import { FiltersDialogComponent } from './filters-dialog/filters-dialog.component';
 import { ProductItemComponent } from './product-item/product-item.component';
-import { EmptyStateComponent } from "../../shared/components/empty-state/empty-state.component";
 
 @Component({
   selector: 'app-shop',
@@ -33,8 +34,10 @@ import { EmptyStateComponent } from "../../shared/components/empty-state/empty-s
     MatMenuTrigger,
     MatPaginator,
     FormsModule,
-    EmptyStateComponent
-],
+    EmptyStateComponent,
+    NgIf,
+    NgFor,
+  ],
   templateUrl: './shop.component.html',
   styleUrl: './shop.component.scss',
 })
@@ -114,5 +117,9 @@ export class ShopComponent implements OnInit {
         }
       },
     });
+  }
+
+  trackByProductId(index: number, product: any): number {
+    return product.id;
   }
 }

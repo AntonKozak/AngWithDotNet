@@ -1,0 +1,30 @@
+<section class="p-6 mb-4">
+  <h2 class="text-2xl font-semibold ">References</h2>
+  <div class="flex flex-wrap">
+    <div
+      *ngFor="let reference of references"
+      class="m-4 p-4 bg-gray-100 rounded shadow w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5"
+    >
+      <h3 class="text-xl font-semibold">{{ reference.name }}</h3>
+      <p class="text-gray-700">
+        {{ reference.position }} at {{ reference.company }}
+      </p>
+      <p class="text-gray-600">
+        Email:
+        <a
+          href="mailto:{{ reference.email }}"
+          class="text-blue-500 hover:underline"
+          >{{ reference.email }}</a
+        >
+      </p>
+      <p class="text-gray-600">
+        Phone:
+        <a
+          href="tel:{{ reference.phone }}"
+          class="text-blue-500 hover:underline"
+          >{{ reference.phone }}</a
+        >
+      </p>
+    </div>
+  </div>
+</section>

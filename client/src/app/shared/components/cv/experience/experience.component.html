@@ -1,0 +1,19 @@
+<section class="p-6 bg-gray-100">
+  <h2 class="text-2xl font-semibold mb-4">Work Experience</h2>
+  <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div
+      *ngFor="let experience of experiences"
+      class="bg-white rounded-lg shadow-md p-4"
+    >
+      <h3 class="text-xl font-semibold">{{ experience.title }}</h3>
+      <p class="text-gray-700">
+        {{ experience.company }} | {{ experience.period }}
+      </p>
+      <ul class="list-disc list-inside mt-2 text-gray-600">
+        <li *ngFor="let responsibility of experience.responsibilities">
+          {{ responsibility }}
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
